@@ -13,4 +13,4 @@
 - The program doesn't close the ripple window for you
 - Accuracy isn't 100%
 ## Screenshot example
-![How it looks like](./images/Screenshot.png)
+![How it looks](./images/Screenshot.png)
