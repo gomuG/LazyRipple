@@ -5,7 +5,7 @@ y_start := 0
 y_end := 0
 drawn_gui := 0
 
-^q::
+^f1::
 	WinGetTitle, active_title, A
 	destroyGui(drawn_gui)
 
@@ -15,21 +15,16 @@ drawn_gui := 0
 	WinActivate, %active_title%
 return
 
-+q::
-	WinGetTitle, active_title, A
-	clickArea(x_start, x_end, y_start, y_end, active_title)
-return
-
 #MaxThreadsPerHotkey 2
-^f1::
++f1::
 	toggle := !toggle
 
 	if not drawn_gui
 		toggle = false
 
-	WinGetTitle, active_title, A
 
 	if toggle{
+		WinGetTitle, active_title, A
 		Gui, Color, 00FF00
 		MsgBox, Setting "%active_title%" as window to click. Click ok to proceed
 	} else {
@@ -90,7 +85,6 @@ clickArea(ByRef x_start, ByRef x_end, ByRef y_start, ByRef y_end, ByRef title){
 		if (count > 100) break
 		count++
 	}
-	MsgBox, Clicking "%title%"
 }
 
 
