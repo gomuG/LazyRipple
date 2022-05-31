@@ -12,5 +12,6 @@
 - The program copies the text to the clipboard so you cannot **copy/paste** anything while it is running.
 - The program doesn't close the ripple window for you
 - Accuracy isn't 100%
+
 ## Screenshot example
 ![How it looks](./images/Screenshot.png)

@@ -4,15 +4,21 @@ x_end := 0
 y_start := 0
 y_end := 0
 drawn_gui := 0
-active_window := ""
 
 ^q::
+	WinGetTitle, active_title, A
 	destroyGui(drawn_gui)
 
+	WinGet, PID, PID, active_title
 	getSelectionCoords(x_start, x_end, y_start, y_end)
 	drawSelectionCoordsGui(x_start, x_end, y_start, y_end, drawn_gui)
+	WinActivate, %active_title%
 return
 
++q::
+	WinGetTitle, active_title, A
+	clickArea(x_start, x_end, y_start, y_end, active_title)
+return
 
 #MaxThreadsPerHotkey 2
 ^f1::
@@ -21,13 +27,15 @@ return
 	if not drawn_gui
 		toggle = false
 
+	WinGetTitle, active_title, A
+
 	if toggle{
 		Gui, Color, 00FF00
+		MsgBox, Setting "%active_title%" as window to click. Click ok to proceed
 	} else {
 		Gui, Color, FF0000
 	}
 
-	WinGetTitle, active_title, A
 
 	Loop {
 		If not toggle
@@ -44,15 +52,17 @@ return
 	}
 return
 
-^+r::Reload
+^+r::
+	Reload
+return
 
 
 getAreaText(ByRef x_start, ByRef x_end, ByRef y_start, ByRef y_end) {
 	RunWait, ./Capture2Text/Capture2Text_CLI.exe -s "%x_start% %y_start% %x_end% %y_end%" --clipboard --blacklist "01234567890!1g",,  hide
 }
 
-clickArea(ByRef x_start, ByRef x_end, ByRef y_start, ByRef y_end, title){
-	WinGetPos, ws_x, ws_y, ws_w, ws_h, title
+clickArea(ByRef x_start, ByRef x_end, ByRef y_start, ByRef y_end, ByRef title){
+	WinGetPos, ws_x, ws_y, ws_w, ws_h, %title%
 	rel_x_s := x_start - ws_x
 	rel_y_s := y_start - ws_y
 	rel_x_e := x_end - ws_x
@@ -71,7 +81,7 @@ clickArea(ByRef x_start, ByRef x_end, ByRef y_start, ByRef y_end, title){
 	while (click_y < click_end_y) {
 		while (click_x < click_end_x) {
 			SetControlDelay -1
-			ControlClick,x%click_x% y%click_y%, Virus(Rooted)
+			ControlClick, x%click_x% y%click_y%,%title%
 			click_x := click_x + click_increment_x
 			Sleep, 20
 		}
@@ -80,12 +90,14 @@ clickArea(ByRef x_start, ByRef x_end, ByRef y_start, ByRef y_end, title){
 		if (count > 100) break
 		count++
 	}
+	MsgBox, Clicking "%title%"
 }
 
 
 destroyGui(byRef drawn_gui){
 	if (drawn_gui = 1){
 		drawn_gui := 0
+		toggle:= 0
 		Gui Destroy
 	}
 }
