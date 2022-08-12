@@ -1,6 +1,9 @@
 # Dislyte auto clicker for Ripple Dimensions
 - Uses Capture2Text(OCR) to recognise Dhalia and Ye Suhua ripple dimensions words. Once detected, the program will click on the specified area.
 
+# How it works
+1. Picks up the text (Ripple Dimension Dhalia/Ye suha) and clicks in the area specified by the user.
+
 # Instructions
 1. Click your emulator to make the window active/focused
 2. Press `Ctrl` + `F1`
